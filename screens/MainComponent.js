@@ -1,10 +1,16 @@
 import WeeklyWRScoreScreen from "./WRScoreScreen";
-import WideRecieverInfoScreen from "./WideRecieverInfoScreen";
+import WideReceiverInfoScreen from "./WideReceiverInfoScreen";
 import { Platform, View } from "react-native";
 import  Constants  from "expo-constants";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import HomeScreen from './HomeScreen';
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchWideReceivers } from "../features/wideReceivers/wideReceiverSlice";
+import { fetchQuarterBacks } from "../features/quarterBacks/quarterBacksSlice";
+import { fetchRunningBacks } from "../features/runnningBacks/runningBacksSlice";
+import { fetchTightEnds} from "../features/tightEnds/tightEndsSlice";
 
 
 const Drawer = createDrawerNavigator();
@@ -30,24 +36,24 @@ const HomeNavigator = () => {
     )
 }
 
-const WideRecieverScoreNavigator = () => {
+const WideReceiverScoreNavigator = () => {
     const Stack = createStackNavigator();
 
     return (
         <Stack.Navigator
-            initialRouteName="WideRecieverScore"
+            initialRouteName="WideReceiverScore"
             screenOptions={screenOptions}
         >
             <Stack.Screen
-                name='WideRecieverScore'
+                name='WideReceiverScore'
                 component={WeeklyWRScoreScreen}
                 options={{ title: 'Weekly WR Scores'}}
             />
             <Stack.Screen
-                name='WideRecieverInfo'
-                component={WideRecieverInfoScreen}
+                name='WideReceiverInfo'
+                component={WideReceiverInfoScreen}
                 options={({ route }) => ({
-                    title: route.params.wideReciever.player_display_Name
+                    title: route.params.wideReceiver.player_display_Name
                 })}
             />
         </Stack.Navigator>
@@ -55,6 +61,15 @@ const WideRecieverScoreNavigator = () => {
 }
 
 const Main = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchWideReceivers());
+        dispatch(fetchQuarterBacks());
+        dispatch(fetchTightEnds());
+        dispatch(fetchRunningBacks());
+    }, [dispatch])
+
     return (
         <View style={{ 
             flex: 1,
@@ -72,9 +87,9 @@ const Main = () => {
                     options={{ title: 'Home' }}
                 />
                 <Drawer.Screen
-                    name='WideRecieverScore'
-                    component={WideRecieverScoreNavigator}
-                    options={{ title: 'Wide Reciever Scores' }}
+                    name='WideReceiverScore'
+                    component={WideReceiverScoreNavigator}
+                    options={{ title: 'Wide Receiver Scores' }}
                 />
             </Drawer.Navigator>
         </View>

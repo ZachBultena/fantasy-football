@@ -1,26 +1,32 @@
-import { useState } from 'react';
 import { FlatList } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
-import { WEEK1WR } from '../shared/week1wrs';
-
+//import { WEEK1WR } from '../shared/week1wrs';
+import { useSelector} from 'react-redux'
+import { comparePoints } from '../shared/comparePoints';
+import { currentWeek } from '../shared/currentWeek';
 
 const WeeklyWRScoreScreen = ({ navigation }) => {
-    const [wideRecievers, setWideRecievers] = useState(WEEK1WR);
+    const wideReceivers = useSelector((state) => state.wideReceivers);
+    let filteredWideReceivers = wideReceivers.wideReceiversArray.filter(function (item) {
+        return item.week === currentWeek;
+    });
 
-    const renderWRScoreItem = ({ item: wideReciever}) => {
+    let newWideReceivers = filteredWideReceivers.sort(comparePoints);
+
+    const renderWRScoreItem = ({ item: wideReceiver}) => {
         return (
             <ListItem 
                 onPress={() => 
-                    navigation.navigate('WideRecieverInfo', { wideReciever })
+                    navigation.navigate('WideReceiverInfo', { wideReceiver })
                 }
             >
                 <Avatar source={{
-                    uri: wideReciever.headshot_url
-                    }} rounderd />
+                    uri: wideReceiver.headshot_url
+                    }} rounded />
                 <ListItem.Content>
-                    <ListItem.Title>{wideReciever.player_name}</ListItem.Title>
+                    <ListItem.Title>{wideReceiver.player_name}</ListItem.Title>
                         <ListItem.Subtitle>
-                            Fantasy Pts: {wideReciever.fantasy_points_ppr}
+                            Fantasy Pts: {wideReceiver.fantasy_points_ppr}
                         </ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem> 
@@ -29,9 +35,10 @@ const WeeklyWRScoreScreen = ({ navigation }) => {
     };
     return (
         <FlatList
-            data = {wideRecievers}
+            data = {newWideReceivers}
             renderItem={renderWRScoreItem}
-            keyExtractor={(item) => item.player_id}
+            keyExtractor={(item) => item.player_id.toString()}
+            initialNumToRender={50}
             nestedScrollEnabled
             />
     );

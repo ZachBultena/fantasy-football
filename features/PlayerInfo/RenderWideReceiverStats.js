@@ -1,22 +1,21 @@
 import { Text, View } from "react-native";
 import { Card } from "react-native-elements";
 
-const RenderWideRecieverStats = ({ wideReciever }) => {
-    if (wideReciever) {
+const RenderWideReceiverStats = ({ wideReceiver }) => {
+    if (wideReceiver) {
         
-        const totalTds = (wideReciever.special_teams_tds + wideReciever.rushing_tds + wideReciever.receiving_tds);
+        const totalTds = (wideReceiver.special_teams_tds + wideReceiver.rushing_tds + wideReceiver.receiving_tds);
 
         return (
             <Card containerStyle={{ padding: 0}}>
                 <Card.Image 
                     source={{
-                        uri: wideReciever.headshot_url
+                        uri: wideReceiver.headshot_url
                     }}
                     style={{
                         height:400
                     }}
                 >
-
                 </Card.Image>
                 <Card.Divider/>
                 <Text
@@ -25,7 +24,7 @@ const RenderWideRecieverStats = ({ wideReciever }) => {
                         textAlign: 'center',
                         fontSize: 30
                     }}>
-                            {wideReciever.player_display_name}
+                            {wideReceiver.player_display_name}
                 </Text>
                 
                 <Text 
@@ -35,16 +34,7 @@ const RenderWideRecieverStats = ({ wideReciever }) => {
                         fontSize:20
                     }}>
 
-                        POS: {wideReciever.position}
-                    </Text>
-                <Text 
-                    style={{ 
-                        margin: 4,
-                        textAlign:'left',
-                        fontSize:20
-                    }}>
-
-                        Receiving Yards: {wideReciever.receiving_yards}
+                        POS: {wideReceiver.position}
                 </Text>
                 <Text 
                     style={{ 
@@ -53,7 +43,16 @@ const RenderWideRecieverStats = ({ wideReciever }) => {
                         fontSize:20
                     }}>
 
-                        Receptions: {wideReciever.receptions}
+                        Receiving Yards: {wideReceiver.receiving_yards}
+                </Text>
+                <Text 
+                    style={{ 
+                        margin: 4,
+                        textAlign:'left',
+                        fontSize:20
+                    }}>
+
+                        Receptions: {wideReceiver.receptions}
                 </Text>
                 <Text 
                     style={{
@@ -69,4 +68,4 @@ const RenderWideRecieverStats = ({ wideReciever }) => {
     return <View />;
 };
 
-export default RenderWideRecieverStats;
+export default RenderWideReceiverStats;
