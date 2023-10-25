@@ -11,7 +11,12 @@ import { fetchWideReceivers } from "../features/wideReceivers/wideReceiverSlice"
 import { fetchQuarterBacks } from "../features/quarterBacks/quarterBacksSlice";
 import { fetchRunningBacks } from "../features/runnningBacks/runningBacksSlice";
 import { fetchTightEnds} from "../features/tightEnds/tightEndsSlice";
-
+import WeeklyQBScoreScreen from "./QBScoreScreen";
+import QBInfoScreen from "./QBInfoScreen";
+import WeeklyRBScoreScreen from "./RBScoreScreen";
+import RBInfoScreen from "./RBInfoScreen";
+import WeeklyTEScoreScreen from "./TEScoreScreen";
+import TEInfoScreen from "./TEInfoScreen";
 
 const Drawer = createDrawerNavigator();
 const screenOptions = {
@@ -59,6 +64,77 @@ const WideReceiverScoreNavigator = () => {
         </Stack.Navigator>
     )
 }
+const QBScoreNavigator = () => {
+    const Stack = createStackNavigator();
+
+    return (
+        <Stack.Navigator
+            initialRouteName="QuarterBackScores"
+            screenOptions={screenOptions}
+        >
+            <Stack.Screen
+                name='WeeklyQuarterBackScore'
+                component={WeeklyQBScoreScreen}
+                options={{ title: 'Weekly QB Scores'}}
+            />
+            <Stack.Screen
+                name='QuarterBackInfo'
+                component={QBInfoScreen}
+                options={({ route }) => ({
+                    title: route.params.quarterBack.player_display_Name
+                })}
+            />
+        </Stack.Navigator>
+    )
+}
+const RBScoreNavigator = () => {
+    const Stack = createStackNavigator();
+
+    return (
+        <Stack.Navigator
+            initialRouteName="RunningBackScores"
+            screenOptions={screenOptions}
+        >
+            <Stack.Screen
+                name='WeeklyRunningBackScore'
+                component={WeeklyRBScoreScreen}
+                options={{ title: 'Weekly RB Scores'}}
+            />
+            <Stack.Screen
+                name='RunningBackInfo'
+                component={RBInfoScreen}
+                options={({ route }) => ({
+                    title: route.params.runningBack.player_display_Name
+                })}
+            />
+        </Stack.Navigator>
+    )
+}
+
+const TEScoreNavigator = () => {
+    const Stack = createStackNavigator();
+
+    return (
+        <Stack.Navigator
+            initialRouteName="TightEndScore"
+            screenOptions={screenOptions}
+        >
+            <Stack.Screen
+                name='Weekly Tight End Score'
+                component={WeeklyTEScoreScreen}
+                options={{ title: 'Weekly TE Scores'}}
+            />
+            <Stack.Screen
+                name='TightEndInfo'
+                component={TEInfoScreen}
+                options={({ route }) => ({
+                    title: route.params.tightEnd.player_display_Name
+                })}
+            />
+        </Stack.Navigator>
+    )
+}
+
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -84,12 +160,27 @@ const Main = () => {
                 <Drawer.Screen
                     name='Home'
                     component={HomeNavigator}
-                    options={{ title: 'Home' }}
+                    options={{ title: 'Weekly High Scores' }}
                 />
                 <Drawer.Screen
                     name='WideReceiverScore'
                     component={WideReceiverScoreNavigator}
                     options={{ title: 'Wide Receiver Scores' }}
+                />
+                <Drawer.Screen
+                    name='QuarterBackScores'
+                    component={QBScoreNavigator}
+                    options={{ title: 'Quarter Back Scores' }}
+                />
+                <Drawer.Screen
+                    name='RunningBackScores'
+                    component={RBScoreNavigator}
+                    options={{ title: 'Running Back Scores' }}
+                />
+                <Drawer.Screen
+                    name='TightEndScores'
+                    component={TEScoreNavigator}
+                    options={{ title: 'Tight End Scores' }}
                 />
             </Drawer.Navigator>
         </View>

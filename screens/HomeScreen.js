@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { Card } from "react-native-elements";
 //import { WEEK1QB } from "../shared/week1qbs";
@@ -17,6 +16,15 @@ const HighScorer = ({ item }) => {
                     >
                 </Card.Image>
                 <Card.Divider/>
+                <Card.Title
+                    style={{
+                        color: 'black',
+                        textAlign: 'center',
+                        fontSize: 30
+                    }}
+                >
+                    Position: {item.position}
+                </Card.Title>
                 <Text
                     style={{
                         color: 'black',
@@ -38,7 +46,7 @@ const HighScorer = ({ item }) => {
             </Card>
         );
     }
-    return <View/>;
+    return <View><Text>Null</Text></View>;
 };
 
 const HomeScreen = () => {
@@ -47,23 +55,19 @@ const HomeScreen = () => {
     const runningBacks = useSelector((state) => state.runningBacks);
     const tightEnds = useSelector((state) => state.tightEnds);
     
-    const filteredWideReceivers = wideReceivers.wideReceiversArray.filter(function (item) {
-        return item.week === currentWeek;
-    });
-    const filteredQuarterBacks = quarterBacks.quarterBacksArray.filter(function (item) {
-        return item.week === currentWeek;
-    });
-    const filteredRunningBacks = runningBacks.runningBacksArray.filter(function (item) {
-        return item.week === currentWeek;
-    });
-    const filteredTightEnds = tightEnds.tightEndsArray.filter(function (item) {
-        return item.week === currentWeek;
-    })
+    function findHighScore(array) {
+        let highestScorer = array
+        .filter(function (item) {
+            return item.week === currentWeek;
+        })
+        .reduce((max, player) => max.fantasy_points_ppr > player.fantasy_points_ppr ? max : player, {});
+        return highestScorer
+    }
 
-    const highestScoringWR = filteredWideReceivers.reduce((max, wr) => max.fantasy_points_ppr > wr.fantasy_points_ppr ? max : wr);
-    const highestScoringQB = filteredQuarterBacks.reduce((max, qb) => max.fantasy_points_ppr > qb.fantasy_points_ppr ? max : qb);
-    const highestScoringRB = filteredRunningBacks.reduce((max, rb) => max.fantasy_points_ppr > rb.fantasy_points_ppr ? max : rb);
-    const highestScoringTE = filteredTightEnds.reduce((max, te) => max.fantasy_points_ppr > te.fantasy_points_ppr ? max : te);
+    const highestScoringWR = findHighScore(wideReceivers.wideReceiversArray);
+    const highestScoringQB = findHighScore(quarterBacks.quarterBacksArray);
+    const highestScoringRB = findHighScore(runningBacks.runningBacksArray);
+    const highestScoringTE = findHighScore(tightEnds.tightEndsArray);
 
 
     
